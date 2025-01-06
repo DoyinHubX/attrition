@@ -391,19 +391,24 @@ if menu == "Predictive Modeling":
         # Predict using user input
         if st.button("Predict Attrition"):
             input_df = pd.DataFrame([input_data])
+
+            # Align the columns with the training data (ensure the input data has the same columns)
+            input_df = input_df.reindex(columns=X.columns, fill_value=0)  # Fill missing columns with 0 if needed
+
+            # Now, transform the input data using the same scaler as the training data
             input_scaled = scaler.transform(input_df)
+            
+            # Make prediction and probability calculation
             prediction = model.predict(input_scaled)[0]
             prediction_prob = model.predict_proba(input_scaled)[0][1]
 
-            # Beautify the prediction display
+            # Display prediction results
             prediction_text = "Attrition Prediction: **" + ('Yes' if prediction == 1 else 'No') + "**"
             prob_text = f"Probability of Attrition: **{prediction_prob:.2f}**"
 
-            # Display prediction and probability with markdown for emphasis
+            # Display results
             st.markdown(f"<h3 style='text-align: center; color: #4CAF50;'>{prediction_text}</h3>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: center; color: #FF6347;'>{prob_text}</h4>", unsafe_allow_html=True)
-
-            # Alternatively, use st.metric for a clean display
             st.metric(label="Predicted Attrition", value="Yes" if prediction == 1 else "No")
             st.metric(label="Attrition Probability", value=f"{prediction_prob:.2f}")
 
