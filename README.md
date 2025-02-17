@@ -2,6 +2,8 @@
 
 This project aims to analyze and predict the key factors influencing **employee attrition and retention** within organizations. By leveraging **data analysis and machine learning**, we can gain actionable insights to improve **talent retention** and **organizational success**.
 
+Follow Step-by-Step Guide: [End-to-End HR Analytics: Predicting Employee Attrition with Streamlit](https://attrition-ext.streamlit.app/) 
+
 ## **Project Objectives** 
 
 The project sets out to:  
