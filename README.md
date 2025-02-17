@@ -50,6 +50,6 @@ The project sets out to:
 
 🚀 **Love this guide?** Your support would mean the world! 
 
-You can show your appreciation here: **[https://buymeacoffee.com/DoyinHubX]**  
+You can show your appreciation here: **[https://buymeacoffee.com/doyinhubx]**  
 
 Thank you, and **happy coding!** 🎉
