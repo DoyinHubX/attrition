@@ -19,7 +19,7 @@ from sklearn.metrics import classification_report, roc_auc_score
 import plotly.express as px
               
 
-#STEP 1: Page Config
+#STEP 2: Page Config and Overview Section
 #------------------------------------------------------------------------------
 # Layout setup
 st.set_page_config(
@@ -72,7 +72,7 @@ st.markdown("""
 
 
 
-# STEP 2: Data and Sidebar Prep
+# Data and Sidebar Prep
 #------------------------------------------------------------------------------
 # Load dataset
 @st.cache_data
@@ -94,7 +94,7 @@ with st.sidebar:
     )
 
 
-# STEP 3: Overview Section
+# Overview Section
 #------------------------------------------------------------------------------
 if selected_menu == "Overview":
     
@@ -193,59 +193,7 @@ if selected_menu == "Overview":
 
 
 
-# STEP 4: Performance Insights Section
-#------------------------------------------------------------------------------
-if selected_menu == "Performance Insights":
-    st.title("Performance Insights")
-
-    # Metric Cards
-    avg_perf_rating = data["PerformanceRating"].mean().round(2)
-    avg_job_sat = data["JobSatisfaction"].mean().round(2)
-    avg_worklife = data["WorkLifeBalance"].mean().round(2)
-    style_metric_cards()
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.metric("Avg Performance Rating", avg_perf_rating)
-    with col2:
-        st.metric("Avg Job Satisfaction", avg_job_sat)
-    with col3:
-        st.metric("Avg Work-Life Balance", avg_worklife)
-
-    # Selection Box for chart type
-    chart_type = st.selectbox("Select a chart to view", 
-                              ["Correlation Heatmap", 
-                               "Performance Rating vs Monthly Income Distribution (Boxplot)",
-                               "Monthly Income Distribution by Performance Rating"])
-
-    # Display based on selected chart
-    if chart_type == "Correlation Heatmap":
-        # Correlation Heatmap
-        corr_matrix = data[["PerformanceRating", "JobSatisfaction", "WorkLifeBalance"]].corr()
-        fig, ax = plt.subplots(figsize=(8, 4))
-        sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", ax=ax)
-        st.pyplot(fig)
-
-    elif chart_type == "Performance Rating vs Monthly Income Distribution (Boxplot)":
-        # Boxplot: Performance Rating vs Monthly Income Distribution
-        fig, ax = plt.subplots(figsize=(8, 5))
-        sns.boxplot(x="PerformanceRating", y="MonthlyIncome", data=data, ax=ax, palette="viridis")
-        ax.set_title("Performance Rating vs Monthly Income Distribution", fontsize=16, loc='center')
-        ax.set_xlabel("Performance Rating", fontsize=14)
-        ax.set_ylabel("Monthly Income", fontsize=14)
-        st.pyplot(fig)
-
-    elif chart_type == "Monthly Income Distribution by Performance Rating":
-        # Histogram: Monthly Income Distribution for different Performance Ratings
-        fig, ax = plt.subplots(figsize=(8, 5))
-        sns.histplot(data=data, x="MonthlyIncome", hue="PerformanceRating", kde=True, ax=ax, palette="Set1")
-        ax.set_title("Monthly Income Distribution by Performance Rating", fontsize=16, loc='center')
-        st.pyplot(fig)
-
-
-
-#STEP 5: Attrition Analysis Section
+#STEP 3: Attrition Analysis Section
 #------------------------------------------------------------------------------
 if selected_menu == "Attrition Analysis":
     st.title("Attrition Analysis")
@@ -379,13 +327,65 @@ if selected_menu == "Attrition Analysis":
         )
 
 
-# STEP 6: Predictive Modeling Section
+# STEP 4: Performance Insights Section
+#------------------------------------------------------------------------------
+if selected_menu == "Performance Insights":
+    st.title("Performance Insights")
+
+    # Metric Cards
+    avg_perf_rating = data["PerformanceRating"].mean().round(2)
+    avg_job_sat = data["JobSatisfaction"].mean().round(2)
+    avg_worklife = data["WorkLifeBalance"].mean().round(2)
+    style_metric_cards()
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("Avg Performance Rating", avg_perf_rating)
+    with col2:
+        st.metric("Avg Job Satisfaction", avg_job_sat)
+    with col3:
+        st.metric("Avg Work-Life Balance", avg_worklife)
+
+    # Selection Box for chart type
+    chart_type = st.selectbox("Select a chart to view", 
+                              ["Correlation Heatmap", 
+                               "Performance Rating vs Monthly Income Distribution (Boxplot)",
+                               "Monthly Income Distribution by Performance Rating"])
+
+    # Display based on selected chart
+    if chart_type == "Correlation Heatmap":
+        # Correlation Heatmap
+        corr_matrix = data[["PerformanceRating", "JobSatisfaction", "WorkLifeBalance"]].corr()
+        fig, ax = plt.subplots(figsize=(8, 4))
+        sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", ax=ax)
+        st.pyplot(fig)
+
+    elif chart_type == "Performance Rating vs Monthly Income Distribution (Boxplot)":
+        # Boxplot: Performance Rating vs Monthly Income Distribution
+        fig, ax = plt.subplots(figsize=(8, 5))
+        sns.boxplot(x="PerformanceRating", y="MonthlyIncome", data=data, ax=ax, palette="viridis")
+        ax.set_title("Performance Rating vs Monthly Income Distribution", fontsize=16, loc='center')
+        ax.set_xlabel("Performance Rating", fontsize=14)
+        ax.set_ylabel("Monthly Income", fontsize=14)
+        st.pyplot(fig)
+
+    elif chart_type == "Monthly Income Distribution by Performance Rating":
+        # Histogram: Monthly Income Distribution for different Performance Ratings
+        fig, ax = plt.subplots(figsize=(8, 5))
+        sns.histplot(data=data, x="MonthlyIncome", hue="PerformanceRating", kde=True, ax=ax, palette="Set1")
+        ax.set_title("Monthly Income Distribution by Performance Rating", fontsize=16, loc='center')
+        st.pyplot(fig)
+
+
+
+# STEP 5: Predictive Modeling Section
 #------------------------------------------------------------------------------
 if selected_menu == "Predictive Modeling":
     st.header("Predictive Modeling")
     st.write('<p class="custom-header">This section includes ML models for attrition prediction. The models aim to identify key factors contributing to employee attrition. By understanding these factors, businesses can take proactive steps to improve retention. </p>', unsafe_allow_html=True)
 
-    # Step 6.1: Upload Dataset in the Sidebar
+    # Step 5.1: Upload Dataset in the Sidebar
     #------------------------------------
     uploaded_file = st.sidebar.file_uploader("Upload a dataset for training", type=["csv"])
 
@@ -410,7 +410,7 @@ if selected_menu == "Predictive Modeling":
         # Display the table
         st.dataframe(data.head())
 
-        # Step 6.2: Preprocessing
+        # Step 5.2: Preprocessing
         #------------------------------------
         # Beautified Preprocessing Text using Bootstrap class
         st.markdown('<div class="alert alert-warning" role="alert"><strong>Preprocessing the dataset...done</strong></div>', unsafe_allow_html=True)
@@ -428,14 +428,14 @@ if selected_menu == "Predictive Modeling":
         X_train = scaler.fit_transform(X_train)
         X_test = scaler.transform(X_test)
 
-        # Step 6.3: Train the Model
+        # Step 5.3: Train the Model
         #------------------------------------
         #st.write("Training the Random Forest model...")
         st.markdown('<div class="alert alert-success" role="alert"><strong>Training the Random Forest model...done</strong></div>', unsafe_allow_html=True)
         model = RandomForestClassifier(random_state=42)
         model.fit(X_train, y_train)
 
-        # Step 6.4: Evaluate the Model
+        # Step 5.4: Evaluate the Model
         #------------------------------------
         y_pred = model.predict(X_test)
         y_prob = model.predict_proba(X_test)[:, 1]
@@ -456,7 +456,7 @@ if selected_menu == "Predictive Modeling":
         roc_auc = roc_auc_score(y_test, y_prob)
         st.metric(label="ROC-AUC Score", value=f"{roc_auc:.2f}", delta="")
 
-        # SEP 6.5 Summary of model performance
+        # SEP 5.5 Summary of model performance
         #------------------------------------
         # Create a collapsible section
         with st.expander("Summary of Model Performance"):
@@ -477,7 +477,7 @@ if selected_menu == "Predictive Modeling":
             st.markdown(summary_text)
         
        
-        # Step 6.6: Interactive Predictions with Two Columns Layout
+        # Step 5.6: Interactive Predictions with Two Columns Layout
         #------------------------------------
         with st.expander("Make Predictions"):
             # Default values for the input form
@@ -528,7 +528,7 @@ if selected_menu == "Predictive Modeling":
                 st.metric(label="Attrition Probability", value=f"{prediction_prob:.2f}")
 
 
-        # Step 6.6: Feature Importance Visualization
+        # Step 5.7: Feature Importance Visualization
         #------------------------------------
         # Feature importance extraction
         with st.expander("Feature Importance"):
