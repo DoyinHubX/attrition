@@ -50,7 +50,7 @@ The project sets out to:
 
 ## **Support & Appreciation** 💙  
 
-🚀 **Love this guide?** Your support would mean the world! 
+🚀 **Love this guide?** Your support would mean a lot! 
 
 You can show your appreciation here: **[https://buymeacoffee.com/doyinhubx]**  
 
